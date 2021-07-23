@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatter | Registration</title>
+    <link rel="stylesheet" href="../public/style/enter.css">
+</head>
+<body>
+    <div class="main">
+        <h1>Chatter</h1>
+        <form action="/" method="post">
+            <input type="text" name="displayName" id="userName" placeholder="Enter your display Name" autofocus autocomplete="off"><br>
+            <input type="submit" value="Let's Go" id="submit">
+        </form>
+        <h2><%=errDisplayName%></h2>   
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+
+            // Query DOM
+            var userName = document.getElementById("userName")
+            var submitBtn = document.getElementById("submit")
+            
+            submitBtn.addEventListener("click",  function(){
+                socket.emit('names', {
+                    name: userName.value
+                })
+            })
+        </script>
+</body>
+</html>
