@@ -17,7 +17,9 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static(__dirname))
 
 // Server Setup
-var server = app.listen(3000, function(){
+const PORT = process.env.PORT || 3000;
+
+var server = app.listen(PORT, function(){
     console.log("Server started at port 3000")
 })
 
@@ -57,6 +59,7 @@ app.post("/", function(req,res){
     else
         res.render("enter",{errDisplayName: "Please enter display name"})
 })
+
 
 
 
