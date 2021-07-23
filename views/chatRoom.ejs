@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatter</title>
+    <link rel="stylesheet" href="../public/style/chatRoom.css">
+</head>
+
+<body>
+
+    <div class="leftMask">
+        <h2>online</h2>
+        <div class="onlineMembers">
+           <% userName.forEach(function(name){%>
+                <p><img width="20px" src="https://img.icons8.com/ios/50/000000/user--v2.png" /><%= name%></p>
+            <%})%>
+        </div>
+    </div>
+    <div class="rightMask">
+        <h1>chatter</h1>
+        <div class="chatBox">
+
+            <div id="output"></div>
+
+          
+
+            <form action="/" method="post" class="bottom">
+                <input type="text" name="name" id="eachName" placeholder="Enter the Name here" autofocus autocomplete="off">
+                <input type="text" name="message" id="message" placeholder="Enter the message here" autofocus autocomplete="off">
+                <button type="submit" id="sendbtn"><img src="https://img.icons8.com/fluent/48/000000/filled-sent.png" /></button>
+            </form>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            
+            
+            var socket = io();
+            
+            // Query DOM
+            var message = document.getElementById("message")
+            var sendBtn  = document.getElementById("sendbtn")
+            var output = document.getElementById("output")
+            var whoIs = document.getElementById("eachName")
+            
+            // Send to Socket
+            sendBtn.addEventListener("click", function(){
+                socket.emit('message', {
+                    message: message.value,
+                    name: whoIs.value
+                })
+            })
+            
+            // Listen Socket
+            socket.on('message', function(messageData){
+                output.innerHTML+="<p><strong>"+messageData.name+":</strong>"+messageData.message+"</p>"
+                console.log(messageData)
+            })
+            
+            socket.on('names',function(nameData){
+                
+                document.getElementById("eachName").setAttribute("value",nameData.name)
+                console.log(nameData)
+            })
+
+
+
+            // io.on('connection', function(socket){
+    
+            // // socket.on('names', function(nameData){
+            // //     name = nameData.name
+            // //     })
+            // })
+        </script>
+</body>
+
+</html>
